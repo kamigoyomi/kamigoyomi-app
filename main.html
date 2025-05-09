@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>神ごよみ統計学 命判定</title>
+  <style>
+    body {
+      font-family: "Hiragino Mincho ProN", serif;
+      background-color: #f9f9f6;
+      color: #333;
+      margin: 0;
+      padding: 1em;
+      box-sizing: border-box;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.6em;
+      margin-bottom: 1em;
+    }
+    input, button {
+      width: 100%;
+      font-size: 1em;
+      padding: 0.8em;
+      margin: 0.5em 0;
+      box-sizing: border-box;
+    }
+    .result {
+      margin-top: 1.5em;
+      padding: 1em;
+      background-color: #fff;
+      border-left: 6px solid #8fbc8f;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>神ごよみ統計学 命（みこと）判定</h1>
+    <label>生年月日を入力してください：</label><br>
+    <input type="date" id="birthdate">
+    <button onclick="calculateFate()">判定</button>
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    function calculateFate() {
+      const birthdate = new Date(document.getElementById('birthdate').value);
+      const year = birthdate.getFullYear();
+      const month = birthdate.getMonth() + 1;
+      const day = birthdate.getDate();
+
+      const basicType = ["煌喜楽", "黒曜大地", "藍玉海原", "翡翠大樹", "紅玉火炎", "瑪瑙星月"];
+      const index = year % 6;
+      const mikoto = basicType[index];
+
+      const yinYang = (year % 2 === 0) ? "陽" : "陰";
+      const multiSoul = (month === 1 && day <= 5);
+
+      const descriptions = {
+        "煌喜楽": "愛と喜びの光を放ち、人々に美しき調和を響かせる命。",
+        "黒曜大地": "揺るがぬ信念と深い静寂をもって大地のように支える命。",
+        "藍玉海原": "知と直感を併せもち、深く自由に広がる命。",
+        "翡翠大樹": "慈しみと育みの力で命を再生する大樹のような命。",
+        "紅玉火炎": "情熱と美の炎で道を照らす表現者の命。",
+        "瑪瑙星月": "天と地をつなぎ、神秘を湛える癒しの命。"
+      };
+
+      let resultText = `あなたの命（みこと）：<strong>${mikoto}（${yinYang}）</strong><br>`;
+      if (multiSoul) resultText += `あなたは<strong>多命（たみこと）</strong>です<br>`;
+      resultText += `<p>${descriptions[mikoto]}</p>`;
+
+      document.getElementById('result').innerHTML = resultText;
+    }
+  </script>
+</body>
+</html>
