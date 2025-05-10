@@ -48,14 +48,24 @@
   </div>
 
   <script>
+    const fixedNumbers = {
+      1968: [25,26,27,28,29,30,31,32,33,34,35,36] // 1968年の仮固定数（1月〜12月）
+    };
+
     function calculateFate() {
       const birthdate = new Date(document.getElementById('birthdate').value);
       const year = birthdate.getFullYear();
-      const month = birthdate.getMonth() + 1;
+      const month = birthdate.getMonth(); // 0-11
       const day = birthdate.getDate();
 
-      let starNumber = (year + month + day) % 60;
-      if (starNumber === 0) starNumber = 60;
+      if (!fixedNumbers[year]) {
+        document.getElementById('result').innerHTML = "この年の固定数は未登録です。";
+        return;
+      }
+
+      const fixed = fixedNumbers[year][month];
+      const starNumber = fixed + day - 1;
+      const clippedStar = (starNumber > 60) ? starNumber - 60 : starNumber;
 
       const mikotoMap = {
         1: "翡翠大樹", 2: "紅玉火炎", 3: "藍玉海原", 4: "黒曜大地", 5: "煌喜楽", 6: "瑪瑙星月",
@@ -70,23 +80,12 @@
         55: "翡翠大樹", 56: "紅玉火炎", 57: "藍玉海原", 58: "黒曜大地", 59: "煌喜楽", 60: "瑪瑙星月"
       };
 
-      const mikoto = mikotoMap[starNumber] || "不明";
-      const yinYang = (starNumber % 2 === 0) ? "陰" : "陽";
-      const multiSoul = [11,22,33,44,55,60].includes(starNumber) ? "（多命）" : "";
+      const mikoto = mikotoMap[clippedStar] || "不明";
+      const yinYang = (clippedStar % 2 === 0) ? "陰" : "陽";
+      const multiSoul = [11,22,33,44,55,60].includes(clippedStar) ? "（多命）" : "";
 
-      const descriptions = {
-        "翡翠大樹": "慈しみと再生をつかさどる、大樹のような命。",
-        "紅玉火炎": "情熱と表現力にあふれた、火のように輝く命。",
-        "藍玉海原": "知恵と感性の波をたたえる、深い水の命。",
-        "黒曜大地": "強さと安定の礎となる、大地の命。",
-        "煌喜楽": "喜びを広げる光の存在、人々を照らす命。",
-        "瑪瑙星月": "星と月の導きを受ける、神秘と癒しの命。"
-      };
-
-      let resultText = "あなたの命（みこと）：<strong>" + mikoto + "（" + yinYang + "）" + multiSoul + "</strong><br>";
-      resultText += "<p>" + (descriptions[mikoto] || "この命の説明は準備中です。") + "</p>";
-
-      document.getElementById('result').innerHTML = resultText;
+      const result = "あなたの命（みこと）：<strong>" + mikoto + "（" + yinYang + "）" + multiSoul + "</strong><br>";
+      document.getElementById('result').innerHTML = result;
     }
   </script>
 </body>
