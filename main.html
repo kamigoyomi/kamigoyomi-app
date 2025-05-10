@@ -54,8 +54,7 @@
       const month = birthdate.getMonth() + 1;
       const day = birthdate.getDate();
 
-      // 仮の固定数ロジック（年 + 月の簡易演算）
-      let starNumber = (year + month) % 60;
+      let starNumber = (year + month + day) % 60;
       if (starNumber === 0) starNumber = 60;
 
       const mikotoMap = {
@@ -73,7 +72,7 @@
 
       const mikoto = mikotoMap[starNumber] || "不明";
       const yinYang = (starNumber % 2 === 0) ? "陰" : "陽";
-      const multiSoul = (month === 1 && day <= 5);
+      const multiSoul = [11,22,33,44,55,60].includes(starNumber) ? "（多命）" : "";
 
       const descriptions = {
         "翡翠大樹": "慈しみと再生をつかさどる、大樹のような命。",
@@ -84,8 +83,7 @@
         "瑪瑙星月": "星と月の導きを受ける、神秘と癒しの命。"
       };
 
-      let resultText = "あなたの命（みこと）：<strong>" + mikoto + "（" + yinYang + "）</strong><br>";
-      if (multiSoul) resultText += "あなたは<strong>多命（たみこと）</strong>です<br>";
+      let resultText = "あなたの命（みこと）：<strong>" + mikoto + "（" + yinYang + "）" + multiSoul + "</strong><br>";
       resultText += "<p>" + (descriptions[mikoto] || "この命の説明は準備中です。") + "</p>";
 
       document.getElementById('result').innerHTML = resultText;
