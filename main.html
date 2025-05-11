@@ -21,7 +21,13 @@
 </div>
 <script>
   const fixedNumbers = {
-    1968: [6, 37, 6, 37, 7, 38, 8, 39, 10, 40, 11, 41]
+    "1700": [12, 36, 13, 37, 14, 38, 15, 39, 16, 40, 17, 41],
+    "1799": [1, 31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36],
+    "1800": [1, 31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36],
+    "1900": [1, 32, 1, 32, 2, 33, 3, 34, 4, 35, 5, 36],
+    "1968": [6, 37, 6, 37, 7, 38, 8, 39, 10, 40, 11, 41],
+    "2025": [16, 47, 16, 47, 17, 48, 18, 49, 19, 50, 20, 51],
+    "2075": [24, 55, 25, 56, 26, 57, 27, 58, 28, 59, 29, 60]
   };
 
   const multiSoulConditions = {
@@ -51,14 +57,13 @@
   }
 
   function getYinYang(year) {
-    const lastDigit = year % 10;
-    return (lastDigit % 2 === 0) ? "陽" : "陰";
+    return (year % 10) % 2 === 0 ? "陽" : "陰";
   }
 
   function calculate() {
     const input = document.getElementById("birthdate").value;
     const birthdate = new Date(input);
-    const year = birthdate.getFullYear();
+    const year = birthdate.getFullYear().toString();
     const month = birthdate.getMonth();
     const day = birthdate.getDate();
 
@@ -72,8 +77,8 @@
     if (star > 60) star -= 60;
 
     const mikoto = getMikotoByStar(star);
-    const yinYang = getYinYang(year);
-    const eto = getEto(year);
+    const yinYang = getYinYang(parseInt(year));
+    const eto = getEto(parseInt(year));
 
     const multi = multiSoulConditions[mikoto] && multiSoulConditions[mikoto][yinYang] === eto
       ? "（多命）"
