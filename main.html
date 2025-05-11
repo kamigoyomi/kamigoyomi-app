@@ -48,29 +48,26 @@
   </div>
 
   <script>
-    // 固定数：1968年のみ（1月〜12月）
+    // 1968年の正確な固定数（1月〜12月）
     const fixedNumbers = {
       1968: [6,37,6,37,7,38,8,39,10,40,11,41]
     };
 
-    // 星数 → 命（みこと）対応
-    const mikotoMap = {
-      1: "翡翠大樹", 2: "紅玉火炎", 3: "藍玉海原", 4: "黒曜大地", 5: "煌喜楽", 6: "瑪瑙星月",
-      7: "翡翠大樹", 8: "紅玉火炎", 9: "藍玉海原", 10: "黒曜大地", 11: "煌喜楽", 12: "瑪瑙星月",
-      13: "翡翠大樹", 14: "紅玉火炎", 15: "藍玉海原", 16: "黒曜大地", 17: "煌喜楽", 18: "瑪瑙星月",
-      19: "翡翠大樹", 20: "紅玉火炎", 21: "藍玉海原", 22: "黒曜大地", 23: "煌喜楽", 24: "瑪瑙星月",
-      25: "翡翠大樹", 26: "紅玉火炎", 27: "藍玉海原", 28: "黒曜大地", 29: "煌喜楽", 30: "瑪瑙星月",
-      31: "翡翠大樹", 32: "紅玉火炎", 33: "藍玉海原", 34: "黒曜大地", 35: "煌喜楽", 36: "瑪瑙星月",
-      37: "翡翠大樹", 38: "紅玉火炎", 39: "藍玉海原", 40: "黒曜大地", 41: "煌喜楽", 42: "瑪瑙星月",
-      43: "翡翠大樹", 44: "紅玉火炎", 45: "藍玉海原", 46: "黒曜大地", 47: "煌喜楽", 48: "瑪瑙星月",
-      49: "翡翠大樹", 50: "紅玉火炎", 51: "藍玉海原", 52: "黒曜大地", 53: "煌喜楽", 54: "瑪瑙星月",
-      55: "翡翠大樹", 56: "紅玉火炎", 57: "藍玉海原", 58: "黒曜大地", 59: "煌喜楽", 60: "瑪瑙星月"
-    };
+    // 星数 → 命（みこと）の分類（指定通り）
+    function getMikotoByStarNumber(star) {
+      if (star >= 1 && star <= 10) return "黒曜大地";
+      if (star >= 11 && star <= 20) return "煌喜楽";
+      if (star >= 21 && star <= 30) return "紅玉火炎";
+      if (star >= 31 && star <= 40) return "瑪瑙星月";
+      if (star >= 41 && star <= 50) return "翡翠大樹";
+      if (star >= 51 && star <= 60) return "藍玉海原";
+      return "不明";
+    }
 
     function calculateFate() {
       const birthdate = new Date(document.getElementById('birthdate').value);
       const year = birthdate.getFullYear();
-      const month = birthdate.getMonth(); // 0-11
+      const month = birthdate.getMonth(); // JavaScriptでは0〜11
       const day = birthdate.getDate();
 
       if (!fixedNumbers[year]) {
@@ -82,7 +79,7 @@
       let starNumber = fixed + day - 1;
       if (starNumber > 60) starNumber -= 60;
 
-      const mikoto = mikotoMap[starNumber] || "不明";
+      const mikoto = getMikotoByStarNumber(starNumber);
       const yinYang = (starNumber % 2 === 0) ? "陰" : "陽";
       const multiSoul = [11,22,33,44,55,60].includes(starNumber) ? "（多命）" : "";
 
