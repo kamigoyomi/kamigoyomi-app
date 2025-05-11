@@ -1,93 +1,88 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>神ごよみ統計学 命判定</title>
   <style>
-    body {
-      font-family: "Hiragino Mincho ProN", serif;
-      background-color: #f9f9f6;
-      color: #333;
-      margin: 0;
-      padding: 1em;
-      box-sizing: border-box;
-    }
-    .container {
-      max-width: 500px;
-      margin: auto;
-    }
-    h1 {
-      text-align: center;
-      font-size: 1.6em;
-      margin-bottom: 1em;
-    }
-    input, button {
-      width: 100%;
-      font-size: 1em;
-      padding: 0.8em;
-      margin: 0.5em 0;
-      box-sizing: border-box;
-    }
-    .result {
-      margin-top: 1.5em;
-      padding: 1em;
-      background-color: #fff;
-      border-left: 6px solid #8fbc8f;
-      font-size: 1em;
-    }
+    body { font-family: "Hiragino Mincho ProN", serif; background-color: #f9f9f6; color: #333; padding: 2em; }
+    .container { max-width: 600px; margin: auto; }
+    input, button { width: 100%; font-size: 1em; padding: 0.8em; margin-top: 1em; }
+    .result { margin-top: 2em; padding: 1em; background: #fff; border-left: 6px solid #8fbc8f; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>神ごよみ統計学 命（みこと）判定</h1>
-    <label>生年月日を入力してください：</label><br>
-    <input type="date" id="birthdate">
-    <button onclick="calculateFate()">判定</button>
-    <div id="result" class="result"></div>
-  </div>
+<div class="container">
+  <h1>神ごよみ統計学 命（みこと）判定</h1>
+  <label>生年月日を入力：</label>
+  <input type="date" id="birthdate"/>
+  <button onclick="calculate()">判定</button>
+  <div id="result" class="result"></div>
+</div>
+<script>
+  const fixedNumbers = {
+    1968: [6, 37, 6, 37, 7, 38, 8, 39, 10, 40, 11, 41]
+  };
 
-  <script>
-    // 1968年の正確な固定数（1月〜12月）
-    const fixedNumbers = {
-      1968: [6,37,6,37,7,38,8,39,10,40,11,41]
-    };
+  const multiSoulConditions = {
+    "黒曜大地": {"陽": "戌", "陰": "亥"},
+    "煌喜楽": {"陽": "申", "陰": "酉"},
+    "紅玉火炎": {"陽": "午", "陰": "未"},
+    "瑪瑙星月": {"陽": "辰", "陰": "巳"},
+    "翡翠大樹": {"陽": "寅", "陰": "卯"},
+    "藍玉海原": {"陽": "子", "陰": "丑"}
+  };
 
-    // 星数 → 命（みこと）の分類（指定通り）
-    function getMikotoByStarNumber(star) {
-      if (star >= 1 && star <= 10) return "黒曜大地";
-      if (star >= 11 && star <= 20) return "煌喜楽";
-      if (star >= 21 && star <= 30) return "紅玉火炎";
-      if (star >= 31 && star <= 40) return "瑪瑙星月";
-      if (star >= 41 && star <= 50) return "翡翠大樹";
-      if (star >= 51 && star <= 60) return "藍玉海原";
-      return "不明";
+  const etoList = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+
+  function getMikotoByStar(star) {
+    if (star >= 1 && star <= 10) return "黒曜大地";
+    if (star >= 11 && star <= 20) return "煌喜楽";
+    if (star >= 21 && star <= 30) return "紅玉火炎";
+    if (star >= 31 && star <= 40) return "瑪瑙星月";
+    if (star >= 41 && star <= 50) return "翡翠大樹";
+    if (star >= 51 && star <= 60) return "藍玉海原";
+    return "不明";
+  }
+
+  function getEto(year) {
+    const etoIndex = (year - 4) % 12;
+    return etoList[etoIndex];
+  }
+
+  function getYinYang(year) {
+    const lastDigit = year % 10;
+    return (lastDigit % 2 === 0) ? "陽" : "陰";
+  }
+
+  function calculate() {
+    const input = document.getElementById("birthdate").value;
+    const birthdate = new Date(input);
+    const year = birthdate.getFullYear();
+    const month = birthdate.getMonth();
+    const day = birthdate.getDate();
+
+    if (!fixedNumbers[year]) {
+      document.getElementById("result").innerHTML = "未対応の年です。";
+      return;
     }
 
-    function calculateFate() {
-      const birthdate = new Date(document.getElementById('birthdate').value);
-      const year = birthdate.getFullYear();
-      const month = birthdate.getMonth(); // JavaScriptでは0〜11
-      const day = birthdate.getDate();
+    const fixed = fixedNumbers[year][month];
+    let star = fixed + day - 1;
+    if (star > 60) star -= 60;
 
-      if (!fixedNumbers[year]) {
-        document.getElementById('result').innerHTML = "この年の固定数は未登録です。";
-        return;
-      }
+    const mikoto = getMikotoByStar(star);
+    const yinYang = getYinYang(year);
+    const eto = getEto(year);
 
-      const fixed = fixedNumbers[year][month];
-      let starNumber = fixed + day - 1;
-      if (starNumber > 60) starNumber -= 60;
+    const multi = multiSoulConditions[mikoto] && multiSoulConditions[mikoto][yinYang] === eto
+      ? "（多命）"
+      : "";
 
-      const mikoto = getMikotoByStarNumber(starNumber);
-      const yinYang = (starNumber % 2 === 0) ? "陰" : "陽";
-      const multiSoul = [11,22,33,44,55,60].includes(starNumber) ? "（多命）" : "";
-
-      let resultText = "あなたの命（みこと）：<strong>" + mikoto + "（" + yinYang + "）" + multiSoul + "</strong><br>";
-      resultText += "<p>星数：" + starNumber + "</p>";
-
-      document.getElementById('result').innerHTML = resultText;
-    }
-  </script>
+    document.getElementById("result").innerHTML =
+      "あなたの命（みこと）：<strong>" + mikoto + "（" + yinYang + "）" + multi + "</strong><br>" +
+      "<p>星数：" + star + " ／ 干支：" + eto + "</p>";
+  }
+</script>
 </body>
 </html>
