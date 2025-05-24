@@ -12,82 +12,67 @@
   </style>
 </head>
 <body>
-<div class="container">
-  <h1>神ごよみ統計学 命（みこと）判定</h1>
-  <label>生年月日を入力：</label>
-  <input type="date" id="birthdate"/>
-  <button onclick="calculate()">判定</button>
-  <div id="result" class="result"></div>
-</div>
+  <div class="container">
+    <h1>神ごよみ統計学 命（みこと）判定</h1>
+    <label>生年月日を入力：</label>
+    <input type="date" id="birthdate"/>
+    <button onclick="calculate()">判定</button>
+    <div id="result" class="result"></div>
+  </div>
 <script>
   const fixedNumbers = {
-    "1700": [12, 36, 13, 37, 14, 38, 15, 39, 16, 40, 17, 41],
-    "1799": [1, 31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36],
-    "1800": [1, 31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36],
-    "1900": [1, 32, 1, 32, 2, 33, 3, 34, 4, 35, 5, 36],
-    "1968": [6, 37, 6, 37, 7, 38, 8, 39, 10, 40, 11, 41],
-    "2025": [16, 47, 16, 47, 17, 48, 18, 49, 19, 50, 20, 51],
-    "2075": [24, 55, 25, 56, 26, 57, 27, 58, 28, 59, 29, 60]
-  };
-
+  "1700": [1, 31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36],
+  "1701": [31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36, 1],
+  "1702": [2, 32, 3, 33, 4, 34, 5, 35, 6, 36, 1, 31],
+  "1703": [32, 3, 33, 4, 34, 5, 35, 6, 36, 1, 31, 2],
+  "1704": [3, 33, 4, 34, 5, 35, 6, 36, 1, 31, 2, 32],
+  "1705": [33, 4, 34, 5, 35, 6, 36, 1, 31, 2, 32, 3],
+  "1706": [4, 34, 5, 35, 6, 36, 1, 31, 2, 32, 3, 33],
+  "1707": [34, 5, 35, 6, 36, 1, 31, 2, 32, 3, 33, 4],
+  "1708": [5, 35, 6, 36, 1, 31, 2, 32, 3, 33, 4, 34],
+  "1709": [35, 6, 36, 1, 31, 2, 32, 3, 33, 4, 34, 5],
+  "1710": [6, 36, 1, 31, 2, 32, 3, 33, 4, 34, 5, 35],
+  "1711": [36, 1, 31, 2, 32, 3, 33, 4, 34, 5, 35, 6],
+  "1712": [1, 31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36],
+  "1713": [31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36, 1],
+  "1714": [2, 32, 3, 33, 4, 34, 5, 35, 6, 36, 1, 31],
+  "1715": [32, 3, 33, 4, 34, 5, 35, 6, 36, 1, 31, 2],
+  "1716": [3, 33, 4, 34, 5, 35, 6, 36, 1, 31, 2, 32],
+  "1717": [33, 4, 34, 5, 35, 6, 36, 1, 31, 2, 32, 3],
+  "1718": [4, 34, 5, 35, 6, 36, 1, 31, 2, 32, 3, 33],
+  "1719": [34, 5, 35, 6, 36, 1, 31, 2, 32, 3, 33, 4],
+  "1720": [5, 35, 6, 36, 1, 31, 2, 32, 3, 33, 4, 34],
+  "1721": [35, 6, 36, 1, 31, 2, 32, 3, 33, 4, 34, 5],
+  "1722": [6, 36, 1, 31, 2, 32, 3, 33, 4, 34, 5, 35],
+  "1723": [36, 1, 31, 2, 32, 3, 33, 4, 34, 5, 35, 6],
+  "1724": [1, 31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36],
+  "1725": [31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36, 1]
+};
   const multiSoulConditions = {
-    "黒曜大地": {"陽": "戌", "陰": "亥"},
-    "煌喜楽": {"陽": "申", "陰": "酉"},
-    "紅玉火炎": {"陽": "午", "陰": "未"},
-    "瑪瑙星月": {"陽": "辰", "陰": "巳"},
-    "翡翠大樹": {"陽": "寅", "陰": "卯"},
-    "藍玉海原": {"陽": "子", "陰": "丑"}
-  };
+  "黒曜大地": {"陽": "戌", "陰": "亥"},
+  "煌喜楽": {"陽": "申", "陰": "酉"},
+  "紅玉火炎": {"陽": "午", "陰": "未"},
+  "瑪瑙星月": {"陽": "辰", "陰": "巳"},
+  "翡翠大樹": {"陽": "寅", "陰": "卯"},
+  "藍玉海原": {"陽": "子", "陰": "丑"}
+};
 
-  const etoList = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
-
+const etoList = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
   function getMikotoByStar(star) {
-    if (star >= 1 && star <= 10) return "黒曜大地";
-    if (star >= 11 && star <= 20) return "煌喜楽";
-    if (star >= 21 && star <= 30) return "紅玉火炎";
-    if (star >= 31 && star <= 40) return "瑪瑙星月";
-    if (star >= 41 && star <= 50) return "翡翠大樹";
-    if (star >= 51 && star <= 60) return "藍玉海原";
-    return "不明";
-  }
+  if (star >= 1 && star <= 10) return "黒曜大地";
+  if (star >= 11 && star <= 20) return "煌喜楽";
+  if (star >= 21 && star <= 30) return "紅玉火炎";
+  if (star >= 31 && star <= 40) return "瑪瑙星月";
+  if (star >= 41 && star <= 50) return "翡翠大樹";
+  if (star >= 51 && star <= 60) return "藍玉海原";
+  return "不明";
+}
 
-  function getEto(year) {
-    const etoIndex = (year - 4) % 12;
-    return etoList[etoIndex];
-  }
+function getEto(year) {
+  const etoIndex = (year - 4) % 12;
+  return etoList[etoIndex];
+}
 
-  function getYinYang(year) {
-    return (year % 10) % 2 === 0 ? "陽" : "陰";
-  }
-
-  function calculate() {
-    const input = document.getElementById("birthdate").value;
-    const birthdate = new Date(input);
-    const year = birthdate.getFullYear().toString();
-    const month = birthdate.getMonth();
-    const day = birthdate.getDate();
-
-    if (!fixedNumbers[year]) {
-      document.getElementById("result").innerHTML = "未対応の年です。";
-      return;
-    }
-
-    const fixed = fixedNumbers[year][month];
-    let star = fixed + day - 1;
-    if (star > 60) star -= 60;
-
-    const mikoto = getMikotoByStar(star);
-    const yinYang = getYinYang(parseInt(year));
-    const eto = getEto(parseInt(year));
-
-    const multi = multiSoulConditions[mikoto] && multiSoulConditions[mikoto][yinYang] === eto
-      ? "（多命）"
-      : "";
-
-    document.getElementById("result").innerHTML =
-      "あなたの命（みこと）：<strong>" + mikoto + "（" + yinYang + "）" + multi + "</strong><br>" +
-      "<p>星数：" + star + " ／ 干支：" + eto + "</p>";
-  }
-</script>
-</body>
-</html>
+function getYinYang(year) {
+  return (year % 10) % 2 === 0 ? "陽" : "陰";
+}
