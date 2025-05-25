@@ -5,23 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>神ごよみ統計学 命判定</title>
   <style>
-    body { font-family: "Hiragino Mincho ProN", serif; background-color: #f9f9f6; color: #333; padding: 2em; }
+    body {
+      font-family: "Hiragino Mincho ProN", serif;
+      background-color: #f9f9f6;
+      color: #333;
+      padding: 2em;
+    }
     .container { max-width: 600px; margin: auto; }
-    input, button { width: 100%; font-size: 1em; padding: 0.8em; margin-top: 1em; }
-    .result { margin-top: 2em; padding: 1em; background: #fff; border-left: 6px solid #8fbc8f; }
+    input, button {
+      width: 100%;
+      font-size: 1em;
+      padding: 0.8em;
+      margin-top: 1em;
+    }
+    .result {
+      margin-top: 2em;
+      padding: 1em;
+      background: #fff;
+      border-left: 6px solid #8fbc8f;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>神ごよみ統計学 命（みこと）判定</h1>
-    <label>生年月日を入力：</label>
-    <input type="date" id="birthdate"/>
-    <button onclick="calculate()">判定</button>
-    <div id="result" class="result"></div>
-  </div>
-<script>
-  const fixedNumbers = {
-  "1700": [1, 31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36],
+<div class="container">
+  <h1>神ごよみ統計学 命（みこと）判定</h1>
+  <label>生年月日を入力：</label>
+  <input type="date" id="birthdate"/>
+  <button onclick="calculate()">判定</button>
+  <div id="result" class="result"></div>
+</div>
+  <script>
+    const fixedNumbers = {
+       "1700": [1, 31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36],
   "1701": [31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36, 1],
   "1702": [2, 32, 3, 33, 4, 34, 5, 35, 6, 36, 1, 31],
   "1703": [32, 3, 33, 4, 34, 5, 35, 6, 36, 1, 31, 2],
@@ -429,7 +444,7 @@
 "2104": [5, 35, 6, 36, 1, 31, 2, 32, 3, 33, 4, 34],
 "2105": [35, 6, 36, 1, 31, 2, 32, 3, 33, 4, 34, 5],    
 };
-  const multiSoulConditions = {
+const multiSoulConditions = {
   "黒曜大地": {"陽": "戌", "陰": "亥"},
   "煌喜楽": {"陽": "申", "陰": "酉"},
   "紅玉火炎": {"陽": "午", "陰": "未"},
@@ -439,7 +454,8 @@
 };
 
 const etoList = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
-  function getMikotoByStar(star) {
+
+function getMikotoByStar(star) {
   if (star >= 1 && star <= 10) return "黒曜大地";
   if (star >= 11 && star <= 20) return "煌喜楽";
   if (star >= 21 && star <= 30) return "紅玉火炎";
@@ -461,7 +477,7 @@ function getYinYang(year) {
 function calculate() {
   const input = document.getElementById("birthdate").value;
   const birthdate = new Date(input);
-  const year = birthdate.getFullYear();
+  const year = birthdate.getFullYear().toString();
   const month = birthdate.getMonth();
   const day = birthdate.getDate();
 
@@ -485,7 +501,7 @@ function calculate() {
   document.getElementById("result").innerHTML =
     "あなたの命（みこと）：<strong>" + mikoto + "（" + yinYang + "）" + multi + "</strong><br>" +
     "<p>星数：" + star + " ／ 干支：" + eto + "</p>";
-}　
+}
 </script>
 </body>
 </html>
