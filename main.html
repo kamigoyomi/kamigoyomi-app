@@ -20,7 +20,7 @@
     <div id="result" class="result"></div>
   </div>
 <script>
-  const fixedNumbers = {
+ const fixedNumbers = {
   "1700": [1, 31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36],
   "1701": [31, 2, 32, 3, 33, 4, 34, 5, 35, 6, 36, 1],
   "1702": [2, 32, 3, 33, 4, 34, 5, 35, 6, 36, 1, 31],
@@ -428,7 +428,7 @@
 "2104": [57, 28, 56, 27, 57, 28, 58, 29, 0, 30, 1, 31],
 "2105": [2, 33, 1, 32, 2, 33, 3, 34, 5, 35, 6, 36]   
 };
-  const multiSoulConditions = {
+const multiSoulConditions = {
   "黒曜大地": {"陽": "戌", "陰": "亥"},
   "煌喜楽": {"陽": "申", "陰": "酉"},
   "紅玉火炎": {"陽": "午", "陰": "未"},
@@ -438,7 +438,8 @@
 };
 
 const etoList = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
-  function getMikotoByStar(star) {
+
+function getMikotoByStar(star) {
   if (star >= 1 && star <= 10) return "黒曜大地";
   if (star >= 11 && star <= 20) return "煌喜楽";
   if (star >= 21 && star <= 30) return "紅玉火炎";
@@ -456,11 +457,12 @@ function getEto(year) {
 function getYinYang(year) {
   return (year % 10) % 2 === 0 ? "陽" : "陰";
 }
+
 function calculate() {
   const input = document.getElementById("birthdate").value;
   const birthdate = new Date(input);
   const year = birthdate.getFullYear().toString();
- const month = birthdate.getMonth();
+  const month = birthdate.getMonth();
   const day = birthdate.getDate();
 
   if (!fixedNumbers[year]) {
@@ -475,7 +477,6 @@ function calculate() {
   const mikoto = getMikotoByStar(star);
   const yinYang = getYinYang(parseInt(year));
   const eto = getEto(parseInt(year));
-
   const isMulti = multiSoulConditions[mikoto] && multiSoulConditions[mikoto][yinYang] === eto;
   const multi = isMulti ? "（多命）" : "";
 
@@ -485,4 +486,5 @@ function calculate() {
 }
 </script>
 </body>
-</html>
+</html> 
+  
