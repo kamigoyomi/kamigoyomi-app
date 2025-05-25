@@ -461,7 +461,7 @@ function getYinYang(year) {
 function calculate() {
   const input = document.getElementById("birthdate").value;
   const birthdate = new Date(input);
-  const year = birthdate.getFullYear().toString();
+  const year = birthdate.getFullYear();
   const month = birthdate.getMonth();
   const day = birthdate.getDate();
 
