@@ -456,32 +456,32 @@ function getEto(year) {
 function getYinYang(year) {
   return (year % 10) % 2 === 0 ? "陽" : "陰";
 }
-function calculate() {  
+function calculate() {
   const input = document.getElementById("birthdate").value;
-const birthdate = new Date(input);
-const year = birthdate.getFullYear().toString();
-const month = birthdate.getMonth();
-const day = birthdate.getDate();
+  const birthdate = new Date(input);
+  const year = birthdate.getFullYear().toString();
+  const month = birthdate.getMonth();
+  const day = birthdate.getDate();
 
-if (!fixedNumbers[year]) {
-  document.getElementById("result").innerHTML = "未対応の年です。";
-  return;
-}
+  if (!fixedNumbers[year]) {
+    document.getElementById("result").innerHTML = "未対応の年です。";
+    return;
+  }
 
-const fixed = fixedNumbers[year][month];
-let star = fixed + day - 1;
-if (star > 60) star -= 60;
+  const fixed = fixedNumbers[year][month];
+  let star = fixed + day - 1;
+  if (star > 60) star -= 60;
 
-const mikoto = getMikotoByStar(star);
-const yinYang = getYinYang(parseInt(year));
-const eto = getEto(parseInt(year));
+  const mikoto = getMikotoByStar(star);
+  const yinYang = getYinYang(parseInt(year));
+  const eto = getEto(parseInt(year));
 
-const isMulti = multiSoulConditions[mikoto] && multiSoulConditions[mikoto][yinYang] === eto;
-const multi = isMulti ? "（多命）" : "";
+  const isMulti = multiSoulConditions[mikoto] && multiSoulConditions[mikoto][yinYang] === eto;
+  const multi = isMulti ? "（多命）" : "";
 
-document.getElementById("result").innerHTML =
-  "あなたの命（みこと）：<strong>" + mikoto + "（" + yinYang + "）" + multi + "</strong><br>" +
-  "<p>星数：" + star + " ／ 干支：" + eto + "</p>";
+  document.getElementById("result").innerHTML =
+    "あなたの命（みこと）：<strong>" + mikoto + "（" + yinYang + "）" + multi + "</strong><br>" +
+    "<p>星数：" + star + " ／ 干支：" + eto + "</p>";
 }
 </script>
 </body>
