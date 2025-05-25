@@ -460,7 +460,7 @@ function calculate() {
   const input = document.getElementById("birthdate").value;
   const birthdate = new Date(input);
   const year = birthdate.getFullYear().toString();
- const month = birthdate.getMonth()+1;
+ const month = birthdate.getMonth();
   const day = birthdate.getDate();
 
   if (!fixedNumbers[year]) {
@@ -468,7 +468,7 @@ function calculate() {
     return;
   }
 
-  const fixed = fixedNumbers[year][month]-1;
+  const fixed = fixedNumbers[year][month];
   let star = fixed + day - 1;
   if (star > 60) star -= 60;
 
